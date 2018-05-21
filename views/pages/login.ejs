@@ -1,0 +1,33 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+    <% include ../partials/header %>
+</header>
+
+<main>
+    <div class="jumbotron">
+		<h2>Login</h2><%= checkin %>
+		<form method="post" >
+			<label for"username"><b>Username : </b></label>
+			<input type="text" name="username" required>
+			</br>
+			<label for"password"><b>Password : </b></label>
+			<input type="password" name="password" required>
+			<button type="submit">Submit</button>
+		</form>
+    </div>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>

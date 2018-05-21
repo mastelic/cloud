@@ -1,0 +1,86 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<% include ../partials/head %>
+</head>
+
+<body class="container">
+
+	<header>
+		<% include ../partials/header %>
+	</header>
+
+	<main>
+		<div class="jumbotron">
+			<h2>Upload</h2>
+			<form method="post" enctype="multipart/form-data" action="/">
+				<input type="file" name="upl" multiple>
+				</br>
+				<button>Submit</button>
+			</form>
+			<h2>Files</h2>
+			<table class="table">
+				<tr>
+					<th>#</th>
+					<th>name</th>
+					<th id="sha">sha</th>
+					<th>date</th>
+					<th>size</th>
+					<th>remove</th>
+				</tr>
+				<% list.forEach(function(list) { %>
+					<tr>
+						<td>
+							<%= list.order %>
+						</td>
+						<td>
+							<a href=<%=dest+list.name %> >
+								<%= list.name %>
+							</a>
+						</td>
+						<td>
+							<!--<%= list.hash %>-->temp</td>
+						<td>
+							<%= list.date %>
+						</td>
+						<td>
+							<%= Math.round(list.size/1000)+" kB" %>
+						</td>
+						<td>
+							<a href=<%="delete/" +list.order %>>
+								<span style="margin:auto; display:table;" class="glyphicon glyphicon-remove"></span>
+							</a>
+						</td>
+					</tr>
+					<% }); %>
+			</table>
+			<h2>Logins</h2>
+			<table class="table">
+				<tr>
+					<th>date</th>
+					<th>IP</th>
+				</tr>
+					<tr>
+						<td>
+							log
+						</td>
+						<td>
+							ip
+						</td>
+					</tr>
+
+			</table>
+
+		</div>
+	</main>
+
+	<footer>
+		<% include ../partials/footer %>
+	</footer>
+
+</body>
+
+</html>
