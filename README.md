@@ -8,6 +8,14 @@ It covers the main function of handling user's files in a folder over the networ
 ## Installation
 
 ```sh
-$ npm install && node app.js
+$ npm install
+$ node app.js
 ```
 
+## Docs
+
+//add later//
+
+## TODO
+
+//add later//
