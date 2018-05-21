@@ -1,18 +1,4 @@
-/*
--------TODO-------
-BACK  END
--fix time
--login time list
--copy same names(1)
 
-FRONT END
--AngularJS
---animate
---sort func
---file size 
---mobile test
--------TODO-------
-*/
 const express = require('express');
 const multer = require('multer');
 const bodyParser = require('body-parser');
