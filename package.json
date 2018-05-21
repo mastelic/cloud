@@ -1,7 +1,7 @@
 {
   "name": "cloud",
   "version": "1.0.0",
-  "description": "Zavrsni rad",
+  "description": "NodeJS app for file cloud storage",
   "main": "app.js",
   "dependencies": {
     "ejs": "^2.5.9",
@@ -17,12 +17,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github.com/mastelic.git"
+    "url": "https://github.com/mastelic/cloud"
   },
-  "author": "masta",
-  "license": "ISC",
+  "author": "mastelic",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/github.com/mastelic/issues"
+    "url": "https://github.com/mastelic/cloud/issues"
   },
-  "homepage": "https://github.com/github.com/mastelic#readme"
+  "homepage": "https://github.com/mastelic/cloud"
 }
