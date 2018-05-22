@@ -8,6 +8,7 @@ It covers the main function of handling user's files in a folder over the networ
 ## Installation
 
 ```sh
+$ git clone https://github.com/mastelic/cloud.git
 $ npm install
 $ node app.js
 ```
