@@ -1,4 +1,4 @@
-# cloud
+######  cloud
 
 This is a NodeJS application used for file uploading to the "Cloud".
 It was written as a Senior prom work for my final grade.
@@ -7,16 +7,17 @@ It covers the main function of handling user's files in a folder over the networ
 
 ## Installation
 
-```sh
+```
 $ git clone https://github.com/mastelic/cloud.git
+$ cd cloud
 $ npm install
 $ node app.js
 ```
 
 ## Docs
 
-//add later//
+Default login is : 
 
-## TODO
-
-//add later//
+  username : user
+  
+  password : pass
