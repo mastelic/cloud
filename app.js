@@ -7,6 +7,7 @@ const hasha = require('hasha');
 const serveStatic = require('serve-static');
 const moment = require('moment-timezone');
 const session = require('express-session');
+var filesize = require("filesize"); 
 var list = [];
 list.length = 0;
 var count = 0;
@@ -14,12 +15,12 @@ var check = 0;
 var checkin = "";
 var log = [];
 log.length = 0;
-
+var publicc = "";
 moment.tz.setDefault("Europe/Zagreb");
 
 var app = new express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit:'2gb'}));
+app.use(bodyParser.urlencoded({extended: true, limit:'2gb'}));
 app.set('views', path.join(__dirname, 'views/pages'));
 app.set('view engine', 'ejs');
 app.use(session({
@@ -49,10 +50,23 @@ function scan(aye) {
     console.log(aye + " REQUEST");//-----------------ADD DATE----------------
     list.length = 0;
     files.forEach(file => {
-      list[count] = { "name": file, "hash": hasha.fromFileSync('./' + dest + file, { algorithm: 'sha256' }), "order": count, "date": moment(fs.statSync("./" + dest + file).atime).add(2, 'hours').format('DD-MM-YYYY hh:mm:ss '), "size": fs.statSync("./" + dest + file).size };
+      //old 
+      //list[count] = { "name": file, "hash": hasha.fromFileSync('./' + dest + file, { algorithm: 'sha256' }), "order": count, "date": moment(fs.statSync("./" + dest + file).atime).add(2, 'hours').format('DD-MM-YYYY hh:mm:ss '), "size": fs.statSync("./" + dest + file).size };
+      //new
+      list[count] = {
+         "name": file,
+         "hash": "fuckit",
+         "order": count,
+         "date": moment(fs.statSync("./" + dest + file).birthtime).format('DD-MM-YYYY hh:mm:ss '),
+         "sortd": moment(fs.statSync("./" + dest + file).birthtime).format('YYYYMMDDHHMMSS'),
+         "size": filesize(fs.statSync("./" + dest + file).size),
+         "sorts": fs.statSync("./" + dest + file).size,
+
+        };
       // console.log("File #"+count+" = "+list[count].name+" | hash = "+list[count].hash+" | order = "+list[count].order+" | date = "+list[count].date+" | size = "+list[count].size);
+   
       count++;
-    });
+      });
     count = 0;
   })//------------UPDATE LIST------------
 }
@@ -77,7 +91,7 @@ var storage = multer.diskStorage({
   }
 })
 
-var upload = multer({ storage: storage }).array('upl');
+var upload = multer({ storage: storage,  }).array('upl');
 
 app.post('/', auth, upload, function (req, res, next) {
   //  console.log(req.files.length + " file(s) uploaded");
@@ -87,25 +101,30 @@ app.post('/', auth, upload, function (req, res, next) {
 
 app.get('/delete/:id', auth, function (req, res, next) {
   //  console.log("DELET request ("+req.params.id+")")
+	
   if (fs.existsSync(dest + "/" + list[req.params.id].name)) {
-    fs.unlinkSync(dest + "/" + list[req.params.id].name, (err) => {
+    fs.copyFile(dest + list[req.params.id].name,'public/' + list[req.params.id].name, (err) => {
       if (err) { } else { }
+      console.log("pubed file "+list[req.params.id].name);
     });
   }
-  scan('DEL');
-  res.redirect('/');
+  scan('PUB');
+  publicc = "https://ftp.masta.me/public/" + list[req.params.id].name;
+  res.redirect('/public/' + list[req.params.id].name);
 });
+
 
 app.get('/', auth, function (req, res, next) {
   //scan('GET');
   res.render('index', {
     list: list,
-    dest: dest
+    dest: dest,
+    publicc : publicc
   });
 });
 
 app.post('/login', function (req, res, next) {
-  console.log("username = " + req.body.username + " password = " + req.body.password);
+  //console.log("username = " + req.body.username + " password = " + req.body.password);
   if (req.body.username && req.body.username === 'user' && req.body.password && req.body.password === 'pass') {
     req.session.authenticated = true;
     console.log("ONLINE");
@@ -118,9 +137,24 @@ app.post('/login', function (req, res, next) {
   }
 });
 
-app.get('/uploads/:file', auth, function (req, res, next) {
+app.get('/uploads/:file', auth, function (req, res,  next) {
   res.sendFile(path.join(__dirname, '/uploads/' + req.params.file));
 });
+
+/*
+app.get('/delete/:id', auth, function (req, res, next) {
+  //  console.log("DELET request ("+req.params.id+")")
+  if (fs.existsSync(dest + "/" + list[req.params.id].name)) {
+    fs.unlinkSync(dest + "/" + list[req.params.id].name, (err) => {
+      if (err) { } else { }
+    });
+  }
+  scan('DEL');
+  res.redirect('/');
+});
+*/
+
+app.use('/public', express.static('public'));
 
 app.get('/login', auth, function (req, res, next) {
   console.log("GET LOGIN");
